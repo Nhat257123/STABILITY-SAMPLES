@@ -49,23 +49,32 @@ export const getActiveAlerts = (samples) => {
       { key: '6m', months: 6, checked: sample.checked6M },
     ];
 
+    let sampleAlerts = [];
+
     milestones.forEach(m => {
       if (!m.checked) {
         const targetDate = calculateTargetDate(sample.startDate, m.months);
         const status = getStatusAnalysis(targetDate, false);
         
         if (status.variant === 'urgent' || status.variant === 'warning') {
-          alerts.push({
+          sampleAlerts.push({
             sampleId: sample.id,
             productName: sample.productName,
             milestoneLabel: `${m.months} Tháng`,
             targetDateStr: targetDate,
             variant: status.variant,
-            text: status.text
+            text: status.text,
+            months: m.months
           });
         }
       }
     });
+
+    if (sampleAlerts.length > 0) {
+      // Pick the alert with the highest months value
+      const furthestAlert = sampleAlerts.reduce((prev, current) => (prev.months > current.months) ? prev : current);
+      alerts.push(furthestAlert);
+    }
   });
 
   return alerts.sort((a, b) => {
