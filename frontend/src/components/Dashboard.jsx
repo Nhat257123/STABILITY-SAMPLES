@@ -45,7 +45,7 @@ const Dashboard = () => {
           results:sample_results(*)
         `)
         .order('id', { ascending: false });
-        
+
       if (error) throw error;
       setSamples(data || []);
     } catch (err) {
@@ -104,7 +104,7 @@ const Dashboard = () => {
         storageCondition: formData.storageCondition,
         initialNotes: formData.initialNotes || ''
       }).eq('id', id);
-      
+
       if (error) throw error;
       fetchSamples();
     } catch (err) {
@@ -156,7 +156,7 @@ const Dashboard = () => {
     XLSX.utils.book_append_sheet(workbook, worksheet, "Danh Sach Mau");
 
     const cols = [
-      { wch: 10 }, { wch: 30 }, { wch: 15 }, { wch: 20 }, { wch: 40 }, 
+      { wch: 10 }, { wch: 30 }, { wch: 15 }, { wch: 20 }, { wch: 40 },
       { wch: 15 }, { wch: 15 }, { wch: 15 }
     ];
     worksheet['!cols'] = cols;
@@ -187,8 +187,8 @@ const Dashboard = () => {
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      result = result.filter(s => 
-        (s.productName && s.productName.toLowerCase().includes(q)) || 
+      result = result.filter(s =>
+        (s.productName && s.productName.toLowerCase().includes(q)) ||
         String(s.id).includes(q)
       );
     }
@@ -196,7 +196,7 @@ const Dashboard = () => {
     result.sort((a, b) => {
       let valA = a[sortConfig.key];
       let valB = b[sortConfig.key];
-      
+
       if (typeof valA === 'string') valA = valA.toLowerCase();
       if (typeof valB === 'string') valB = valB.toLowerCase();
 
@@ -251,25 +251,26 @@ const Dashboard = () => {
         </div>
       ) : (
         <>
-          <StatsSummary 
-            total={samples.length} 
-            completed={samples.filter(s => s.checked6M === 1).length} 
+          <StatsSummary
+            total={samples.length}
+            completed={samples.filter(s => s.checked6M === 1).length}
             upcoming={activeAlerts.length}
             filterMode={filterMode}
             setFilterMode={setFilterMode}
           />
-          
+
           <div style={{ marginBottom: '1.5rem' }}>
-            <Alerts samples={samples} onOpenLogResult={(id, m) => setLogResultModal({ isOpen: true, sample: samples.find(s=>s.id===id), milestone: m })} />
+            <Alerts samples={samples} onOpenLogResult={(id, m) => setLogResultModal({ isOpen: true, sample: samples.find(s => s.id === id), milestone: m })} />
           </div>
-            
+
           <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-light)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+            <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-4" style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-light)' }}>
               <h2 className="card-header" style={{ marginBottom: 0 }}>Danh Sách Mẫu Đang Theo Dõi</h2>
-              
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                <div className="search-wrapper" style={{ display: 'flex', alignItems: 'center', background: '#f8fafc', borderRadius: 'var(--radius-md)', padding: '0 0.5rem 0 0', border: '1px solid var(--border-light)' }}>
-                  <select 
+
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center w-full lg:w-auto">
+                <div className="search-wrapper flex items-center bg-gray-50 rounded-md border border-light p-0 sm:pr-2 w-full sm:w-auto" style={{ background: '#f8fafc', border: '1px solid var(--border-light)' }}>
+                  <select
+                    className="select-filter"
                     style={{ border: 'none', background: 'transparent', padding: '0.6rem', fontSize: '0.9rem', color: 'var(--text-main)', outline: 'none', cursor: 'pointer', borderRight: '1px solid var(--border-light)' }}
                     value={progressFilter}
                     onChange={(e) => setProgressFilter(e.target.value)}
@@ -279,29 +280,32 @@ const Dashboard = () => {
                     <option value="done3m">Đã test 3 Tháng</option>
                     <option value="done6m">Đã test 6 Tháng</option>
                   </select>
-                  
-                  <div style={{ position: 'relative' }}>
-                    <Search size={16} style={{ position: 'absolute', left: '0.6rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-                    <input 
-                      type="text" 
-                      placeholder="Tìm SP hoặc Mã số..." 
-                      style={{ border: 'none', background: 'transparent', outline: 'none', padding: '0.6rem 0.6rem 0.6rem 2.2rem', fontSize: '0.9rem', minWidth: '220px' }}
+
+                  <div className="position-relative w-full" style={{ position: 'relative', flex: 1 }}>
+                    <Search size={16} className="search-icon-abs" style={{ position: 'absolute', left: '0.6rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                    <input
+                      type="text"
+                      className="search-input w-full"
+                      placeholder="Tìm SP hoặc Mã số..."
+                      style={{ border: 'none', background: 'transparent', outline: 'none', padding: '0.6rem 0.6rem 0.6rem 2.2rem', fontSize: '0.9rem', width: '100%' }}
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                   </div>
                 </div>
-                
-                <button className="btn-primary" onClick={handleExportCSV} style={{ background: '#fff', color: 'var(--text-main)', border: '1px solid var(--border-light)', boxShadow: 'none' }}>
-                  <Download size={18} /> Xuất Excel
-                </button>
 
-                <button className="btn-primary" onClick={() => setIsNewSampleOpen(true)}>
-                  <Plus size={18} /> Tạo mới
-                </button>
+                <div className="flex flex-row gap-2 w-full sm:w-auto">
+                  <button className="btn-primary flex-1 justify-center sm:flex-none" onClick={handleExportCSV} style={{ background: '#fff', color: 'var(--text-main)', border: '1px solid var(--border-light)', boxShadow: 'none' }}>
+                    <Download size={18} /> Xuất Excel
+                  </button>
+
+                  <button className="btn-primary flex-1 justify-center sm:flex-none" onClick={() => setIsNewSampleOpen(true)}>
+                    <Plus size={18} /> Tạo mới
+                  </button>
+                </div>
               </div>
             </div>
-            
+
             <div className="table-wrapper" style={{ border: 'none', borderRadius: 0 }}>
               <table className="elegant-table">
                 <thead>
@@ -332,9 +336,9 @@ const Dashboard = () => {
                   ) : (
                     paginatedSamples.map(sample => (
                       <React.Fragment key={sample.id}>
-                        <tr onClick={(e) => handleRowClick(sample.id, e)} style={{ backgroundColor: expandedRowId === sample.id ? 'var(--color-primary-light)' : 'transparent' }}>
-                          <td style={{ fontWeight: 600, color: 'var(--text-muted)' }}>#{sample.id}</td>
-                          <td>
+                        <tr className="mobile-card-row" onClick={(e) => handleRowClick(sample.id, e)} style={{ backgroundColor: expandedRowId === sample.id ? 'var(--color-primary-light)' : 'transparent' }}>
+                          <td data-label="Mã số" style={{ fontWeight: 600, color: 'var(--text-muted)' }}>#{sample.id}</td>
+                          <td data-label="Công thức / Ghi chú" className="mobile-product-name">
                             <strong style={{ display: 'block', color: 'var(--text-main)', fontSize: '1rem' }}>
                               {sample.productName}
                             </strong>
@@ -344,34 +348,34 @@ const Dashboard = () => {
                               </span>
                             )}
                           </td>
-                          <td>{formatDateDisplay(sample.startDate)}</td>
-                          <td>
+                          <td data-label="Ngày đưa vào">{formatDateDisplay(sample.startDate)}</td>
+                          <td data-label="Điều kiện">
                             <span style={{ background: 'var(--color-primary-light)', color: 'var(--color-primary-dark)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 600 }}>
                               {sample.storageCondition}
                             </span>
                           </td>
-                          <td>
-                            <StatusBadge 
-                              sample={sample} months={1} 
-                              isCompleted={Boolean(sample.checked1M)} 
-                              onOpenLog={() => setLogResultModal({ isOpen: true, sample, milestone: '1m' })} 
+                          <td data-label="Mốc 1 Tháng">
+                            <StatusBadge
+                              sample={sample} months={1}
+                              isCompleted={Boolean(sample.checked1M)}
+                              onOpenLog={() => setLogResultModal({ isOpen: true, sample, milestone: '1m' })}
                             />
                           </td>
-                          <td>
-                            <StatusBadge 
-                              sample={sample} months={3} 
-                              isCompleted={Boolean(sample.checked3M)} 
-                              onOpenLog={() => setLogResultModal({ isOpen: true, sample, milestone: '3m' })} 
+                          <td data-label="Mốc 3 Tháng">
+                            <StatusBadge
+                              sample={sample} months={3}
+                              isCompleted={Boolean(sample.checked3M)}
+                              onOpenLog={() => setLogResultModal({ isOpen: true, sample, milestone: '3m' })}
                             />
                           </td>
-                          <td>
-                            <StatusBadge 
-                              sample={sample} months={6} 
-                              isCompleted={Boolean(sample.checked6M)} 
-                              onOpenLog={() => setLogResultModal({ isOpen: true, sample, milestone: '6m' })} 
+                          <td data-label="Mốc 6 Tháng">
+                            <StatusBadge
+                              sample={sample} months={6}
+                              isCompleted={Boolean(sample.checked6M)}
+                              onOpenLog={() => setLogResultModal({ isOpen: true, sample, milestone: '6m' })}
                             />
                           </td>
-                          <td style={{ textAlign: 'center', whiteSpace: 'nowrap' }}>
+                          <td data-label="Thao tác" className="mobile-actions" style={{ textAlign: 'center', whiteSpace: 'nowrap' }}>
                             <button className="action-btn view" title="Xem hồ sơ" onClick={() => setViewSampleModal({ isOpen: true, sample })}>
                               <Eye size={18} />
                             </button>
@@ -394,7 +398,7 @@ const Dashboard = () => {
                                       {r.imagePath ? (
                                         <img src={getImageUrl(r.imagePath)} alt="Sample" />
                                       ) : (
-                                        <div style={{width: 90, height: 90, background: '#e2e8f0', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', color: '#64748b', border: '1px dashed #cbd5e1'}}>No Image</div>
+                                        <div style={{ width: 90, height: 90, background: '#e2e8f0', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', color: '#64748b', border: '1px dashed #cbd5e1' }}>No Image</div>
                                       )}
                                       <div style={{ flex: 1 }}>
                                         <strong style={{ display: 'block', marginBottom: '4px', textTransform: 'uppercase', color: 'var(--color-primary)' }}>Mốc {r.milestone}</strong>
@@ -421,24 +425,24 @@ const Dashboard = () => {
             </div>
 
             {/* Pagination Controls */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: '#fff', borderTop: '1px solid var(--border-light)' }}>
-              <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                Đang xem <strong style={{color: 'var(--text-main)'}}>{totalItems === 0 ? 0 : startIndex + 1} - {endIndex}</strong> trong tổng số <strong style={{color: 'var(--text-main)'}}>{totalItems}</strong> mẫu
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 py-4 px-6 bg-white border-t border-light">
+              <span className="text-muted text-sm text-center sm:text-left">
+                Đang xem <strong style={{ color: 'var(--text-main)' }}>{totalItems === 0 ? 0 : startIndex + 1} - {endIndex}</strong> trong tổng số <strong style={{ color: 'var(--text-main)' }}>{totalItems}</strong> mẫu
               </span>
-              
+
               {totalPages > 1 && (
-                <div style={{ display: 'flex', gap: '0.4rem', border: 'none' }}>
-                  <button 
-                    className="page-btn" 
-                    disabled={currentPage === 1} 
+                <div className="flex gap-2 flex-wrap sm:flex-nowrap border-none w-full sm:w-auto mt-2 sm:mt-0 justify-center">
+                  <button
+                    className="page-btn"
+                    disabled={currentPage === 1}
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   >
                     Trước
                   </button>
-                  
+
                   {pageNumbers.map(num => (
-                    <button 
-                      key={num} 
+                    <button
+                      key={num}
                       className={`page-btn ${currentPage === num ? 'active-page' : ''}`}
                       onClick={() => setCurrentPage(num)}
                     >
@@ -446,9 +450,9 @@ const Dashboard = () => {
                     </button>
                   ))}
 
-                  <button 
-                    className="page-btn" 
-                    disabled={currentPage === totalPages} 
+                  <button
+                    className="page-btn"
+                    disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   >
                     Tiếp
