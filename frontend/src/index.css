@@ -394,30 +394,46 @@ label.elegant-label {
 
 /* Action Buttons (Ghost Style) */
 .action-btn {
-  padding: 0.4rem;
-  border-radius: var(--radius-md);
-  color: var(--text-muted);
+  padding: 0.45rem;
+  border-radius: var(--radius-full);
   background: transparent;
   border: none;
   transition: all 0.2s ease;
   display: inline-flex;
   margin-left: 0.25rem;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
 }
 .action-btn:hover {
-  background: transparent;
-  transform: scale(1.1);
+  transform: scale(1.05); /* Slight bounce */
+}
+
+/* Xem (View) */
+.action-btn.view {
+  color: #6B7280; /* Neutral Gray */
 }
 .action-btn.view:hover {
-  color: var(--color-primary); /* Blue */
+  color: #374151; /* Darker Gray */
+  background: #f3f4f6; /* Very light gray bg */
+}
+
+/* Sửa (Edit) */
+.action-btn.edit {
+  color: var(--color-primary); /* Primary Blue */
 }
 .action-btn.edit:hover {
-  color: #ea580c; /* Orange */
-  background: #fff7ed;
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light); /* Light blue bg */
+}
+
+/* Xóa (Delete) */
+.action-btn.delete {
+  color: var(--color-danger); /* Red */
 }
 .action-btn.delete:hover {
-  color: white;
-  background: var(--color-danger);
+  color: #DC2626; /* Darker Red */
+  background: var(--color-danger-bg); /* Light red bg */
 }
 
 /* Quick Filter Pills */
