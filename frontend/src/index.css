@@ -349,18 +349,22 @@ label.elegant-label {
   box-shadow: var(--shadow-hover);
 }
 .status-pill.completed { background: var(--color-success-bg); border-color: var(--color-success); }
+.status-pill.completed-solid { background: var(--color-success); border-color: var(--color-success); }
 .status-pill.urgent { background: var(--color-danger-bg); border-color: var(--color-danger); }
 .status-pill.warning { background: var(--color-warning-bg); border-color: var(--color-warning); }
 .status-pill.pending { background: #f1f5f9; border-color: #cbd5e1; }
+.status-pill.failed-solid { background: var(--color-danger); border-color: var(--color-danger); }
 
 .pill-month { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
 .pill-date { font-size: 0.8rem; font-weight: 600; margin: 2px 0; color: var(--text-main); }
 .pill-status { font-size: 0.65rem; font-weight: 600; }
 
 .status-pill.completed .pill-status, .status-pill.completed .pill-month, .status-pill.completed .pill-date { color: var(--color-success); }
+.status-pill.completed-solid .pill-status, .status-pill.completed-solid .pill-month, .status-pill.completed-solid .pill-date { color: #ffffff; }
 .status-pill.urgent .pill-status, .status-pill.urgent .pill-month, .status-pill.urgent .pill-date { color: var(--color-danger); }
 .status-pill.warning .pill-status, .status-pill.warning .pill-month, .status-pill.warning .pill-date { color: var(--color-warning); }
 .status-pill.pending .pill-status, .status-pill.pending .pill-month, .status-pill.pending .pill-date { color: #475569; }
+.status-pill.failed-solid .pill-status, .status-pill.failed-solid .pill-month, .status-pill.failed-solid .pill-date { color: #ffffff; }
 
 /* Search Bar */
 .search-wrapper {

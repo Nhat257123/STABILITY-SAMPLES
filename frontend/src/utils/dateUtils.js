@@ -21,7 +21,7 @@ export const getStatusAnalysis = (targetDateStr, isCompleted) => {
   if (diffDays < 0) {
     return { variant: 'urgent', text: 'Quá hạn' };
   } else if (diffDays === 0) {
-    return { variant: 'urgent', text: 'Hôm nay' };
+    return { variant: 'warning', text: 'Hôm nay' };
   } else if (diffDays <= 3) {
     return { variant: 'warning', text: `${diffDays} ngày nữa` };
   } else {

@@ -273,7 +273,7 @@ const Dashboard = () => {
             setFilterMode={setFilterMode}
           />
 
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: '1.5rem', maxHeight: '250px', overflowY: 'auto', paddingRight: '0.5rem' }}>
             <Alerts samples={samples} onOpenLogResult={(id, m) => setLogResultModal({ isOpen: true, sample: samples.find(s => s.id === id), milestone: m })} />
           </div>
 
@@ -324,10 +324,10 @@ const Dashboard = () => {
             {/* Quick Filters Area */}
             <div className="flex gap-2 flex-wrap">
                 {[
-                  { id: 'all', label: 'Tất cả' },
-                  { id: 'today', label: 'Cần kiểm tra hôm nay' },
-                  { id: 'overdue', label: 'Đã quá hạn' },
-                  { id: 'failed', label: 'Không đạt' }
+                  { id: 'all', label: `Tất cả (${samples.length})` },
+                  { id: 'today', label: `Hôm nay (${new Set(activeAlerts.filter(a => a.text === 'Hôm nay').map(a => a.sampleId)).size})` },
+                  { id: 'overdue', label: `Đã quá hạn (${new Set(activeAlerts.filter(a => a.variant === 'urgent' && a.text !== 'Hôm nay').map(a => a.sampleId)).size})` },
+                  { id: 'failed', label: `Không đạt (${new Set(samples.filter(s => s.results && s.results.some(r => r.evaluationStatus !== 'pass')).map(s => s.id)).size})` }
                 ].map(filter => (
                   <button
                     key={filter.id}

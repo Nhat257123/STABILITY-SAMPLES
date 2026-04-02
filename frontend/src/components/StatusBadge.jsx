@@ -16,7 +16,7 @@ const StatusBadge = ({ sample, months, isCompleted, onOpenLog }) => {
   
   if (isCompleted && result) {
     text = result.evaluationStatus === 'pass' ? 'Đạt' : 'Không đạt';
-    variant = result.evaluationStatus === 'pass' ? 'completed' : 'urgent';
+    variant = result.evaluationStatus === 'pass' ? 'completed-solid' : 'failed-solid';
   } else if (isCompleted && !result) {
     text = 'Đã kiểm tra';
     variant = 'completed';
@@ -31,7 +31,7 @@ const StatusBadge = ({ sample, months, isCompleted, onOpenLog }) => {
     if (diffDays < 0) {
       variant = 'urgent'; text = 'Trễ hạn';
     } else if (diffDays === 0) {
-      variant = 'urgent'; text = 'Hôm nay';
+      variant = 'warning'; text = 'Hôm nay';
     } else if (diffDays <= 3) {
       variant = 'warning'; text = `${diffDays} ngày nữa`;
     } else {
