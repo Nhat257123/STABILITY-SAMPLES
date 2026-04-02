@@ -20,6 +20,7 @@ const Dashboard = () => {
   const [filterMode, setFilterMode] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [progressFilter, setProgressFilter] = useState('all');
+  const [quickFilter, setQuickFilter] = useState('all');
 
   // Sort & Pagination
   const [sortConfig, setSortConfig] = useState({ key: 'id', direction: 'descending' });
@@ -76,7 +77,7 @@ const Dashboard = () => {
   // Reset page when filter/search/progress changes
   useEffect(() => {
     setCurrentPage(1);
-  }, [filterMode, searchQuery, progressFilter]);
+  }, [filterMode, searchQuery, progressFilter, quickFilter]);
 
   // Actions
   const handleAddSample = async (formData) => {
@@ -177,6 +178,19 @@ const Dashboard = () => {
       result = result.filter(s => alertSampleIds.has(s.id));
     }
 
+    if (quickFilter === 'today') {
+      const todayAlerts = new Set(activeAlerts.filter(a => a.text === 'Hôm nay').map(a => a.sampleId));
+      result = result.filter(s => todayAlerts.has(s.id));
+    } else if (quickFilter === 'overdue') {
+      const overdueAlerts = new Set(activeAlerts.filter(a => a.variant === 'urgent' && a.text !== 'Hôm nay').map(a => a.sampleId));
+      result = result.filter(s => overdueAlerts.has(s.id));
+    } else if (quickFilter === 'failed') {
+      result = result.filter(s => {
+        if (!s.results) return false;
+        return s.results.some(r => r.evaluationStatus !== 'pass');
+      });
+    }
+
     if (progressFilter === 'done1m') {
       result = result.filter(s => s.checked1M === 1);
     } else if (progressFilter === 'done3m') {
@@ -206,7 +220,7 @@ const Dashboard = () => {
     });
 
     return result;
-  }, [samples, filterMode, searchQuery, progressFilter, activeAlerts, sortConfig]);
+  }, [samples, filterMode, searchQuery, progressFilter, quickFilter, activeAlerts, sortConfig]);
 
   const totalItems = filteredSamples.length;
   const totalPages = Math.ceil(totalItems / itemsPerPage) || 1;
@@ -264,10 +278,11 @@ const Dashboard = () => {
           </div>
 
           <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-4" style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-light)' }}>
-              <h2 className="card-header" style={{ marginBottom: 0 }}>Danh Sách Mẫu Đang Theo Dõi</h2>
+            <div className="flex flex-col gap-4" style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-light)' }}>
+              <div className="flex flex-col lg:flex-row justify-between lg:items-center gap-4">
+                <h2 className="card-header" style={{ marginBottom: 0 }}>Danh Sách Mẫu Đang Theo Dõi</h2>
 
-              <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center w-full lg:w-auto">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-stretch sm:items-center w-full lg:w-auto">
                 <div className="search-wrapper flex items-center bg-gray-50 rounded-md border border-light p-0 sm:pr-2 w-full sm:w-auto" style={{ background: '#f8fafc', border: '1px solid var(--border-light)' }}>
                   <select
                     className="select-filter"
@@ -303,6 +318,25 @@ const Dashboard = () => {
                     <Plus size={18} /> Tạo mới
                   </button>
                 </div>
+              </div>
+            </div>
+
+            {/* Quick Filters Area */}
+            <div className="flex gap-2 flex-wrap">
+                {[
+                  { id: 'all', label: 'Tất cả' },
+                  { id: 'today', label: 'Cần kiểm tra hôm nay' },
+                  { id: 'overdue', label: 'Đã quá hạn' },
+                  { id: 'failed', label: 'Không đạt' }
+                ].map(filter => (
+                  <button
+                    key={filter.id}
+                    className={`pill-button ${quickFilter === filter.id ? 'active' : ''}`}
+                    onClick={() => setQuickFilter(filter.id)}
+                  >
+                    {filter.label}
+                  </button>
+                ))}
               </div>
             </div>
 

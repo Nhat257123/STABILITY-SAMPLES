@@ -291,7 +291,7 @@ label.elegant-label {
   transition: var(--transition);
 }
 .elegant-table tbody tr:hover {
-  background: var(--color-primary-light);
+  background: #f1f5f9; /* Thay bằng màu xám nhạt */
 }
 
 /* Expandable Row Styling */
@@ -351,6 +351,7 @@ label.elegant-label {
 .status-pill.completed { background: var(--color-success-bg); border-color: var(--color-success); }
 .status-pill.urgent { background: var(--color-danger-bg); border-color: var(--color-danger); }
 .status-pill.warning { background: var(--color-warning-bg); border-color: var(--color-warning); }
+.status-pill.pending { background: #f1f5f9; border-color: #cbd5e1; }
 
 .pill-month { font-size: 0.65rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
 .pill-date { font-size: 0.8rem; font-weight: 600; margin: 2px 0; color: var(--text-main); }
@@ -359,6 +360,7 @@ label.elegant-label {
 .status-pill.completed .pill-status, .status-pill.completed .pill-month, .status-pill.completed .pill-date { color: var(--color-success); }
 .status-pill.urgent .pill-status, .status-pill.urgent .pill-month, .status-pill.urgent .pill-date { color: var(--color-danger); }
 .status-pill.warning .pill-status, .status-pill.warning .pill-month, .status-pill.warning .pill-date { color: var(--color-warning); }
+.status-pill.pending .pill-status, .status-pill.pending .pill-month, .status-pill.pending .pill-date { color: #475569; }
 
 /* Search Bar */
 .search-wrapper {
@@ -407,9 +409,34 @@ label.elegant-label {
 }
 .action-btn.edit:hover {
   color: #ea580c; /* Orange */
+  background: #fff7ed;
 }
 .action-btn.delete:hover {
-  color: var(--color-danger); /* Red */
+  color: white;
+  background: var(--color-danger);
+}
+
+/* Quick Filter Pills */
+.pill-button {
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: var(--transition);
+  border: 1px solid var(--border-light);
+  background: white;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.pill-button:hover {
+  background: #f1f5f9;
+  color: var(--text-main);
+}
+.pill-button.active {
+  background: var(--color-primary-dark);
+  color: white;
+  border-color: var(--color-primary-dark);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 
 /* Sorting & Pagination */
