@@ -3,10 +3,8 @@ import { Plus, Edit3 } from 'lucide-react';
 
 const STORAGE_CONDITIONS = [
   '40°C / 75% RH',
-  '45°C / 75% RH',
-  '50°C',
-  'Room Temperature',
-  'Sunlight Exposure'
+  'Nhiệt độ thường',
+  'Phơi sáng'
 ];
 
 const SampleForm = ({ onSubmit, isModal = false, initialData = null }) => {
